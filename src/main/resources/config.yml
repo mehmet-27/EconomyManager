@@ -1,0 +1,5 @@
+default-server-language: 'en_US'
+
+currency-name:
+  singular: 'Coin'
+  plural: 'Coins'

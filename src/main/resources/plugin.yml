@@ -1,0 +1,7 @@
+name: EconomyManager
+version: '1.0.0'
+main: dev.mehmet27.economymanager.EconomyManager
+api-version: '1.13'
+authors: [ Mehmet27 ]
+description: Desc.
+softdepend: [ Vault ]
