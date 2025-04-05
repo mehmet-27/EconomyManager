@@ -45,7 +45,7 @@ public class ConfigManager {
 				e.printStackTrace();
 			}
 		}
-		//todo plugin.debug("Found " + locales.size() + " language files.");
+		plugin.getLogger().info("Found " + locales.size() + " language files.");
 		return locales;
 	}
 
@@ -162,7 +162,7 @@ public class ConfigManager {
 		for (Map.Entry<Locale, Object> entry : getLocales().entrySet()) {
 			locales.put(entry.getKey(), (FileConfiguration) entry.getValue());
 		}
-		defaultLocale = Utils.stringToLocale(getConfig().getString("default-server-language"));
+		defaultLocale = Utils.stringToLocale(getConfig().getString("default-server-language", "en_US"));
 	}
 
 	@SuppressWarnings("ResultOfMethodCallIgnored")

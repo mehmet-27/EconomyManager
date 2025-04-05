@@ -1,5 +1,14 @@
 default-server-language: 'en_US'
 
+mysql:
+  enable: false
+  table-prefix: 'em_'
+  host: 'localhost'
+  port: 3306
+  database: 'database'
+  username: 'username'
+  password: 'password'
+
 currency-name:
   singular: 'Coin'
   plural: 'Coins'

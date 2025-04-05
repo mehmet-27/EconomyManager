@@ -5,6 +5,7 @@ import io.github.slimjar.relocation.RelocationRule;
 import io.github.slimjar.resolver.data.Dependency;
 import io.github.slimjar.resolver.data.DependencyData;
 import io.github.slimjar.resolver.data.Repository;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,21 +21,23 @@ public class LibraryManager {
 
 	private final String pluginName;
 	private final Logger logger;
-	private final Path datafolder;
+	private final Path dataFolder;
+	private final String packageName;
 
-	public LibraryManager(String pluginName, Logger logger, Path datafolder) {
-		this.pluginName = pluginName;
-		this.logger = logger;
-		this.datafolder = datafolder;
+	public LibraryManager(JavaPlugin plugin, String packageName) {
+		this.pluginName = plugin.getDescription().getName();
+		this.logger = plugin.getLogger();
+		this.dataFolder = plugin.getDataFolder().toPath();
+		this.packageName = packageName;
 	}
 
 	public boolean init() {
 		try {
 			DependencyData dependencyData = getDependencyData();
-			logger.info(String.format("Downloading %s libraries...", dependencyData.getDependencies().size()));
+			logger.info(String.format("Checking %s libraries...", dependencyData.getDependencies().size()));
 			ApplicationBuilder
 					.appending(pluginName)
-					.downloadDirectoryPath(datafolder.resolve("libraries"))
+					.downloadDirectoryPath(dataFolder.resolve("libraries"))
 					.dataProviderFactory((url) -> () -> dependencyData)
 					.internalRepositories(getRepositories())
 					.build();
@@ -94,6 +97,6 @@ public class LibraryManager {
 	}
 
 	public String getPackageName() {
-		return "dev.mehmet27.economymanager";
+		return packageName;
 	}
 }

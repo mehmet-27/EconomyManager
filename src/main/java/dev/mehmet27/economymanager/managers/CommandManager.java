@@ -1,13 +1,15 @@
 package dev.mehmet27.economymanager.managers;
 
-import co.aikar.commands.*;
+import co.aikar.commands.BaseCommand;
+import co.aikar.commands.BukkitCommandIssuer;
+import co.aikar.commands.ConditionFailedException;
+import co.aikar.commands.PaperCommandManager;
 import co.aikar.locales.MessageKey;
 import dev.mehmet27.economymanager.EconomyManager;
 import dev.mehmet27.economymanager.utils.FileUtils;
 import dev.mehmet27.economymanager.utils.Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,25 +18,25 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class CommandManager extends PaperCommandManager {
 
-	private final dev.mehmet27.economymanager.EconomyManager plugin;
+	private final EconomyManager plugin;
 
-	public CommandManager(dev.mehmet27.economymanager.EconomyManager plugin) {
+	public CommandManager(EconomyManager plugin) {
 		super(plugin);
 		this.plugin = plugin;
 		setup();
 	}
 
 	public void registerDependencies() {
-		registerDependency(ConfigManager.class, dev.mehmet27.economymanager.EconomyManager.getInstance().getConfigManager());
-		registerDependency(StorageManager.class, dev.mehmet27.economymanager.EconomyManager.getInstance().getStorageManager());
+		registerDependency(ConfigManager.class, plugin.getConfigManager());
+		registerDependency(StorageManager.class, plugin.getStorageManager());
+		registerDependency(CacheManager.class, plugin.getCacheManager());
 	}
 
 	public void registerCommands() {
-		Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType(dev.mehmet27.economymanager.EconomyManager.COMMANDS_PACKAGE, BaseCommand.class);
+		Set<Class<? extends BaseCommand>> commands = FileUtils.getClassesBySubType(EconomyManager.COMMANDS_PACKAGE, BaseCommand.class);
 		for (Class<? extends BaseCommand> c : commands) {
 			// ACF already registers nested classes
 			if (c.isMemberClass() || Modifier.isStatic(c.getModifiers())) {
@@ -54,7 +56,7 @@ public class CommandManager extends PaperCommandManager {
 	public void registerConditions() {
 		getCommandConditions().addCondition(OfflinePlayer.class, "other_player", (context, exec, value) -> {
 			BukkitCommandIssuer issuer = context.getIssuer();
-			if (!dev.mehmet27.economymanager.EconomyManager.getInstance().getConfigManager().getConfig().getBoolean("self-punish")) {
+			if (!EconomyManager.getInstance().getConfigManager().getConfig().getBoolean("self-punish")) {
 				if (issuer.isPlayer() && issuer.getPlayer().getName().equals(value.getName())) {
 					throw new ConditionFailedException(getMessage(issuer, "main.not-on-yourself"));
 				}
@@ -129,7 +131,7 @@ public class CommandManager extends PaperCommandManager {
 	}
 
 	public void updateDefaultLocale() {
-		Locale locale = dev.mehmet27.economymanager.EconomyManager.getInstance().getConfigManager().getDefaultLocale();
+		Locale locale = EconomyManager.getInstance().getConfigManager().getDefaultLocale();
 		getLocales().setDefaultLocale(locale);
 	}
 
@@ -138,7 +140,7 @@ public class CommandManager extends PaperCommandManager {
 	}
 
 	public void setup() {
-		loadLocaleFiles(dev.mehmet27.economymanager.EconomyManager.getInstance().getConfigManager().getLocaleFiles());
+		loadLocaleFiles( EconomyManager.getInstance().getConfigManager().getLocaleFiles());
 		updateDefaultLocale();
 		registerDependencies();
 		addCommandReplacements();

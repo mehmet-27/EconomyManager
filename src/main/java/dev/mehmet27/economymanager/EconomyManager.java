@@ -1,9 +1,6 @@
 package dev.mehmet27.economymanager;
 
-import dev.mehmet27.economymanager.managers.CommandManager;
-import dev.mehmet27.economymanager.managers.ConfigManager;
-import dev.mehmet27.economymanager.managers.LibraryManager;
-import dev.mehmet27.economymanager.managers.StorageManager;
+import dev.mehmet27.economymanager.managers.*;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +12,7 @@ public final class EconomyManager extends JavaPlugin {
 	private ConfigManager configManager;
 	private CommandManager commandManager;
 	private StorageManager storageManager;
+	private CacheManager cacheManager;
 
 	public static final String COMMANDS_PACKAGE = "dev.mehmet27.economymanager.commands";
 
@@ -22,7 +20,7 @@ public final class EconomyManager extends JavaPlugin {
 
 	@Override
 	public void onLoad() {
-		LibraryManager libraryManager = new LibraryManager(getDescription().getName(), getLogger(), getDataFolder().toPath());
+		libraryManager = new LibraryManager(this, "dev.mehmet27.economymanager");
 		if (!libraryManager.init()) {
 			getLogger().severe("The libraries could not be loaded.");
 			getServer().getPluginManager().disablePlugin(this);
@@ -36,6 +34,7 @@ public final class EconomyManager extends JavaPlugin {
 		this.configManager = new ConfigManager(this);
 		configManager.setup();
 		this.storageManager = new StorageManager();
+		this.cacheManager = new CacheManager(this);
 		this.commandManager = new CommandManager(this);
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
 			getLogger().severe("Vault plugin not found! You should install it before!");
@@ -51,6 +50,7 @@ public final class EconomyManager extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getLogger().info("Shutdown process initiated...");
+		getCacheManager().saveAllPlayers();
 		if (storageManager == null) return;
 		storageManager.getCore().getDataSource().close();
 	}
@@ -73,6 +73,10 @@ public final class EconomyManager extends JavaPlugin {
 
 	public StorageManager getStorageManager() {
 		return storageManager;
+	}
+
+	public CacheManager getCacheManager() {
+		return cacheManager;
 	}
 
 	public boolean isVaultEnabled() {

@@ -25,11 +25,11 @@ public class EconomyPlayer {
 		this.balance = balance;
 	}
 
-	public void addBalance(BigDecimal amount) {
+	public void giveBalance(BigDecimal amount) {
 		this.balance = balance.add(amount);
 	}
 
-	public void removeBalance(BigDecimal amount) {
+	public void takeBalance(BigDecimal amount) {
 		this.balance = balance.subtract(amount);
 	}
 }

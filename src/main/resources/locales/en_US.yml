@@ -1,0 +1,38 @@
+errors:
+  join-error: '&eAn internal error occurred while joining the server. Please contact the server administrators.'
+
+command:
+  economymanager:
+    description: 'The main command of the plugin.'
+    admin:
+      name: 'admin'
+      description: 'Admin command.'
+      reload:
+        name: 'reload'
+        description: 'Reloads the plugin.'
+        done: '&aAll configuration files have been reloaded.'
+    help:
+      name: 'help'
+      description: 'Help command.'
+    about:
+      name: 'about'
+      description: 'About command.'
+  give:
+    name: 'give'
+    description: 'Give command.'
+    done: '&e%amount% &abalance was added to &e%player%.'
+    message: '&e%sender% &agave you a balance of &e%amount%.'
+  take:
+    name: 'take'
+    description: 'Take command.'
+    message: '&e%sender% &aremoved &e%amount% &abalance from you.'
+  set:
+    name: 'set'
+    description: 'Set command.'
+    done: '&e%player%&a''s balance set to &e%amount%.'
+    message: '&e%sender% &aset your balance to &e%amount%.'
+  reset:
+    name: 'reset'
+    description: 'Reset command.'
+    done: '&e%player%&a''s balance has been reset to zero.'
+    message: '&e%sender% &areset your balance.'
