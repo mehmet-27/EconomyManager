@@ -1,6 +1,6 @@
-[![EconomyManager Icon](https://imgur.com/MTj0AIR.png)](https://www.spigotmc.org/resources/96062/)
+[![EconomyManager Icon](https://imgur.com/a/a7gbYM8)](https://www.spigotmc.org/resources/96062/)
 
-# PunishManager
+# EconomyManager
 Advanced economy plugin for Minecraft servers.
 
 [![Spiget Downloads](https://img.shields.io/spiget/downloads/96062?style=for-the-badge&logo=appveyor)](https://www.spigotmc.org/resources/96062/)
