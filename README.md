@@ -1,4 +1,4 @@
-[![EconomyManager Icon](https://i.imgur.com/L5BbQKX.png)](https://www.spigotmc.org/resources/96062/)
+[![EconomyManager Icon](https://i.imgur.com/DRLRH8Z.png)](https://www.spigotmc.org/resources/96062/)
 
 # EconomyManager
 Advanced economy plugin for Minecraft servers.
