@@ -33,9 +33,11 @@ public class Utils {
 
 		message = placeholders.apply(message);
 
-		Player player = EconomyManager.getInstance().getServer().getPlayer(sender);
-		if (player != null) {
-			player.sendMessage(message);
+		Player senderPlayer = EconomyManager.getInstance().getServer().getPlayer(sender);
+		if (senderPlayer != null) {
+			senderPlayer.sendMessage(message);
+		} else {
+			EconomyManager.getInstance().getServer().getConsoleSender().sendMessage(message);
 		}
 	}
 

@@ -5,7 +5,6 @@ import dev.mehmet27.economymanager.EconomyPlayer;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class CacheManager {
@@ -37,15 +36,15 @@ public class CacheManager {
 	}
 
 	public void savePlayer(EconomyPlayer economyPlayer) {
-		storageManager.updateEconomyPlayer(economyPlayer);
-		getPlayerMap().remove(economyPlayer.getUuid());
+		economyManager.getServer().getScheduler().runTaskAsynchronously(economyManager, () -> {
+			storageManager.updateEconomyPlayer(economyPlayer);
+			getPlayerMap().remove(economyPlayer.getUuid());
+		});
 	}
 
 	public void saveAllPlayers() {
-		economyManager.getLogger().info("Data of 250 players is being saved...");
-		for (Map.Entry<UUID, EconomyPlayer> playerEntry : playerMap.entrySet()) {
-			savePlayer(playerEntry.getValue());
-		}
-		economyManager.getLogger().info("Players data has been saved.");
+		economyManager.debug(String.format("Data of %s players is being saved...", getPlayerMap().size()));
+		storageManager.updatePlayerMap(getPlayerMap());
+		economyManager.debug("Players data has been saved.");
 	}
 }

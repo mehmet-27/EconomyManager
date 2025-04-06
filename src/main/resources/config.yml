@@ -9,6 +9,8 @@ mysql:
   username: 'username'
   password: 'password'
 
+auto-save-interval: 60
+
 currency-name:
   singular: 'Coin'
   plural: 'Coins'

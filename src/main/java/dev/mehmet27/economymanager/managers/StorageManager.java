@@ -9,8 +9,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class StorageManager {
@@ -78,6 +81,21 @@ public class StorageManager {
 		try {
 			getCore().execute(query);
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updatePlayerMap(HashMap<UUID, EconomyPlayer> playerMap) {
+		String query = String.format("UPDATE %s SET `balance` = ? WHERE `uuid` = ?", playersTable());
+		try (Connection connection = core.getDataSource().getConnection();
+			 PreparedStatement statement = connection.prepareStatement(query)) {
+			for (Map.Entry<UUID, EconomyPlayer> playerEntry : playerMap.entrySet()) {
+				statement.setBigDecimal(1, playerEntry.getValue().getBalance());
+				statement.setString(2, playerEntry.getKey().toString());
+				statement.addBatch();
+			}
+			statement.executeBatch();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

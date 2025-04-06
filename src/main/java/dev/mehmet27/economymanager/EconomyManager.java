@@ -45,6 +45,7 @@ public final class EconomyManager extends JavaPlugin {
 		}
 		long enableTime = System.currentTimeMillis() - startTime;
 		getLogger().info(String.format("Successfully enabled within %sms", enableTime));
+		startAutoSaveTask();
 	}
 
 	@Override
@@ -53,6 +54,14 @@ public final class EconomyManager extends JavaPlugin {
 		getCacheManager().saveAllPlayers();
 		if (storageManager == null) return;
 		storageManager.getCore().getDataSource().close();
+	}
+
+	private void startAutoSaveTask() {
+		long interval = getConfigManager().getConfig().getLong("auto-save-interval", 60);
+		interval = interval * 60 * 20;
+		getServer().getScheduler().runTaskTimerAsynchronously(this, () -> {
+			cacheManager.saveAllPlayers();
+		}, interval, interval);
 	}
 
 	public static EconomyManager getInstance() {
@@ -81,5 +90,11 @@ public final class EconomyManager extends JavaPlugin {
 
 	public boolean isVaultEnabled() {
 		return isVaultEnabled;
+	}
+
+	public void debug(String text) {
+		if (getConfigManager().getConfig().getBoolean("debug", false)) {
+			getLogger().info(text);
+		}
 	}
 }
